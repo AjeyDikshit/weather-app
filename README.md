@@ -12,7 +12,7 @@ Steps to create a web app using Django
 6. At this point your server will start running
 7. Add your 'app' to project.settings file, inside the INSTALLED_APPS variable
 8. Go to project.urls file, import include from django.urls --> your import statement would look like `from django.urls import path, include`
-9. Inside the <strong>urlpatterns<strong> variable add a new variable,  `path('', include('<name if app>.urls'))`
+9. Inside the <strong>urlpatterns</strong> variable add a new variable,  `path('', include('<name if app>.urls'))`
 10. At this point for an elementary application, you are not required to change anything in the project folder, and can only focus on the app folder
 11. To create a webpage in Django, we need to follow 3 steps (they can be in any order):
       - Create a template
