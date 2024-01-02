@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Weather App</title>
+<!--    <link rel="stylesheet" href="admin/css/header.css">-->
+  </head>
+  <body>
+    <header style="background-color: lightblue; padding:20px">
+      <img src="./admin/img/logo.png" style="position:relative">
+      <div style="position: absolute">Home</div>
+    </header>
+    <form style="display:flex; align-items:center;">
+      {% csrf_token %}
+      <input type="text" class="input-city" placeholder="Enter city" style="padding:8px; margin:10px 10px; font-size:16px">
+      <button class="get-weather" style="background-color:rgb(97, 243, 103);
+                border-radius:4px; padding:5px 10px; font-size:16px; cursor:pointer;
+                margin-right:10px">Get weather</button>
+    </form>
+  </body>
+
+</html>
