@@ -1,20 +1,31 @@
 <html>
   <head>
+    {% load static %}
+
     <title>Weather App</title>
-<!--    <link rel="stylesheet" href="admin/css/header.css">-->
+    <link rel="stylesheet" type="text/html" href="{% static 'header.css' %}">
   </head>
   <body>
     <header style="background-color: lightblue; padding:20px">
-      <img src="./admin/img/logo.png" style="position:relative">
-      <div style="position: absolute">Home</div>
+      <div style="position:relative">
+        <img src="{% static 'logo.png' %}">
+        <div style="position: absolute; left:20px; top:20px">Home</div>
+      </div>
+
     </header>
-    <form style="display:flex; align-items:center;">
-      {% csrf_token %}
-      <input type="text" class="input-city" placeholder="Enter city" style="padding:8px; margin:10px 10px; font-size:16px">
-      <button class="get-weather" style="background-color:rgb(97, 243, 103);
-                border-radius:4px; padding:5px 10px; font-size:16px; cursor:pointer;
-                margin-right:10px">Get weather</button>
-    </form>
+<!--    <form style="display:flex; align-items:center;">-->
+<!--&lt;!&ndash;      {% csrf_token %}&ndash;&gt;-->
+<!--      <input type="text" class="input-city" placeholder="Enter city" style="padding:8px; margin:10px 10px; font-size:16px">-->
+<!--      <button class="get-weather" style="background-color:rgb(97, 243, 103);-->
+<!--                border-radius:4px; padding:5px 10px; font-size:16px; cursor:pointer;-->
+<!--                margin-right:10px">Get weather</button>-->
+<!--    </form>-->
+    <div style="display:flex;background-color: magenta; height: 100px; align-items:center; justify-content: center;">
+        <div style="background-color: white; border:1px solid; border-radius: 5px; padding: 10px 20px; box-shadow: 1px 1px 3px black">
+          <h3>City selected: {{ location.name }}, {{ location.country }}</h3>
+          <h3>How are you doing</h3>
+        </div>
+    </div>
   </body>
 
 </html>
