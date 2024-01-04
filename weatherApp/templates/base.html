@@ -3,29 +3,124 @@
     {% load static %}
 
     <title>Weather App</title>
-    <link rel="stylesheet" type="text/html" href="{% static 'header.css' %}">
+<!--    <link rel="stylesheet" type="text/html" href="{% static 'header.css' %}">-->
+    <style>
+        header {
+          background-color: #9bb2e8;
+          padding-bottom:20px;
+        }
+
+        body {
+          margin: 0;
+        }
+        img {
+          height: 60px;
+          width: 60px;
+          margin-left: 50px;
+          position: relative;
+        }
+
+        .form-div {
+          display:flex;
+          background-color: transparent;
+          height: 100px;
+          align-items:center;
+          justify-content: center;
+        }
+
+        form {
+          display:flex;
+          align-items:center;
+        }
+
+        .get-weather{
+          background-color:rgb(97, 243, 103);
+          border-radius:4px;
+          padding:5px 10px;
+          font-size:16px;
+          cursor:pointer;
+          margin-right:10px
+        }
+        .collapse {
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+        }
+
+        .text {
+            background-color: #e1ffc2;
+            display: none;
+            font-size: 20px;
+        }
+    </style>
   </head>
   <body>
-    <header style="background-color: lightblue; padding:20px">
+    <header>
       <div style="position:relative">
-        <img src="{% static 'logo.png' %}">
-        <div style="position: absolute; left:20px; top:20px">Home</div>
+        <a href="home/">
+          <img src='https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png'>
+          <div style="position: absolute; bottom:-5px; left:90px; color:white; font-size:22px; font-family:arial;">How's the Weather?</div>
+        </a>
+      </div>
+    </header>
+
+    <div class="form-div">
+      <form method="POST">
+      {% csrf_token %}
+      <input type="text" class="input-city" name="city" placeholder="Enter city" style="padding:8px; margin:10px 10px; font-size:16px">
+      <button class="get-weather">Add city</button>
+    </form>
+    </div>
+      {% if current and location %}
+      <div style="display:flex;background-color: transparent; align-items:center; justify-content: center; margin-top:30px">
+          <div style="background-color: #e1953e; border:1px solid; border-radius: 5px;
+          padding: 10px 20px; box-shadow: 1px 1px 3px black; position: relative;">
+            <span style="font-weight: bold; font-size:20px; font-family:arial">City selected:</span> <span style="font-family:arial;font-size:20px;color:rgb(56, 187, 91);">{{ location.name }}, {{ location.country }}</span> <br>
+            <span style="font-weight: bold; font-size:16px; font-family:arial">Local time:</span> <span style="font-family:arial;font-size:14px;">{{ location.localtime }}</span> <br>
+            <span style="font-weight: bold; font-size:16px; font-family:arial">Temperature:</span> <span style="font-family:arial;font-size:14px;">{{ current.temperature }}° C</span>
+            <button class="collapse" style="position: absolute; bottom: 5px; right: 5px;">▽</button>
+            <div style="display: none; margin-top:10px; font-family:arial; font-size:14px">
+              <strong>Weather:</strong> {{ current.weather_descriptions.0 }}<br>
+              <strong>Feels like:</strong> {{ current.feelslike }}° C <br>
+              <strong>Visibility:</strong> {{ current.visibility }} <br>
+              <strong>Humidity:</strong> {{ current.humidity }} <br>
+              <strong>Wind speed:</strong> {{ current.wind_speed }} km/hr <br>
+            </div>
+          </div>
+        <button style="margin-left: 20px; background-color:red">Remove</button>
       </div>
 
-    </header>
-<!--    <form style="display:flex; align-items:center;">-->
-<!--&lt;!&ndash;      {% csrf_token %}&ndash;&gt;-->
-<!--      <input type="text" class="input-city" placeholder="Enter city" style="padding:8px; margin:10px 10px; font-size:16px">-->
-<!--      <button class="get-weather" style="background-color:rgb(97, 243, 103);-->
-<!--                border-radius:4px; padding:5px 10px; font-size:16px; cursor:pointer;-->
-<!--                margin-right:10px">Get weather</button>-->
-<!--    </form>-->
-    <div style="display:flex;background-color: magenta; height: 100px; align-items:center; justify-content: center;">
-        <div style="background-color: white; border:1px solid; border-radius: 5px; padding: 10px 20px; box-shadow: 1px 1px 3px black">
-          <h3>City selected: {{ location.name }}, {{ location.country }}</h3>
-          <h3>How are you doing</h3>
-        </div>
-    </div>
+<!--      <div style="display:flex;background-color: magenta; align-items:center; justify-content: center; margin-top:30px">-->
+<!--          <div style="background-color: white; border:1px solid; border-radius: 5px;-->
+<!--          padding: 10px 20px; box-shadow: 1px 1px 3px black; position: relative;">-->
+<!--            <span style="font-weight: bold; font-size:20px; font-family:arial">City selected:</span> <span style="font-family:arial;font-size:20px;color:rgb(56, 187, 91);">{{ location.name }}, {{ location.country }}</span> <br>-->
+<!--            <span style="font-weight: bold; font-size:16px; font-family:arial">Local time:</span> <span style="font-family:arial;font-size:14px;">{{ location.localtime }}</span> <br>-->
+<!--            <span style="font-weight: bold; font-size:16px; font-family:arial">Temperature selected:</span> <span style="font-family:arial;font-size:14px;">{{ current.temperature }}° F</span>-->
+<!--            <button class="collapse" style="position: absolute; bottom: 5px; right: 5px;">▽</button>-->
+<!--            <div style="display: none; margin-top:10px; font-family:arial; font-size:14px">-->
+<!--              <strong>Weather:</strong> {{ current.weather_descriptions.0 }}<br>-->
+<!--              <strong>Feels like:</strong> {{ current.feelslike }}° F <br>-->
+<!--              <strong>Visibility</strong> {{ current.visibility }} <br>-->
+<!--              <strong>Humidity:</strong> {{ current.humidity }} <br>-->
+<!--              <strong>Wind speed:</strong> {{ current.wind_speed }} <br>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--      </div>-->
+      {% endif %}
+    <script>
+        var btn = document.getElementsByClassName("collapse");
+        btn[0].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                btn[0].innerHTML = "▽"
+                content.style.display = "none";
+            } else {
+                btn[0].innerHTML = "△"
+                content.style.display = "block";
+            }
+        });
+    </script>
   </body>
 
 </html>
