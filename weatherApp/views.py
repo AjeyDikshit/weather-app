@@ -1,23 +1,63 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 import requests
+from .models import Citie
 
 with open('API_KEY', 'r') as file:
     access_key = file.read()
 
-# TODO: Add functionality to add/remove cities and give updated results whenever the user refreshes the page
-# TODO: Add the entry to database and then show the data. (Can be done to solve the above TODO)
+# TODO: static files not loading
 
 def home(request):
     if request.method == 'GET':
-        return render(request, 'base.html')
+        cities = Citie.objects.all()
+
+        weather_data = []
+
+        for city in cities:
+            city_temp = Citie.objects.get(name=city).id
+            data = requests.get(f"http://api.weatherstack.com/current?access_key={access_key}&query={city}").json()
+            weather_info = dict(city_id=city_temp,
+                                img_src=data['current']['weather_icons'][0],
+                                city_name=data['location']['name'],
+                                country=data['location']['country'],
+                                localtime=data['location']['localtime'],
+                                temperature=data['current']['temperature'],
+                                description=data['current']['weather_descriptions'][0],
+                                feels_like=data['current']['feelslike'],
+                                visibiltity=data['current']['visibility'],
+                                humidity=data['current']['humidity'],
+                                wind_speed=data['current']['wind_speed']
+                                )
+            weather_data.append(weather_info)
+        context = {'weather_data': weather_data}
+
+        return render(request, 'base.html', context)
 
     if request.method == 'POST':
         city = request.POST['city']
-        data = requests.get(f"http://api.weatherstack.com/current?access_key={access_key}&query={city}").json()
-        print(data)
-        return render(request, 'base.html', data)
+        Citie.objects.create(name=city)
+
+        return redirect("home")
+
+def delete_record(request, id):
+    delete_it = Citie.objects.get(id=id)
+    delete_it.delete()
+    return redirect("home")
 
 def home1(request, city):
     data = requests.get(f"http://api.weatherstack.com/current?access_key={access_key}&query={city}").json()
-    print(data)
-    return render(request, 'base.html', data)
+
+    weather_info = dict(img_src=data['current']['weather_icons'][0],
+                        city_name=data['location']['name'],
+                        country=data['location']['country'],
+                        localtime=data['location']['localtime'],
+                        temperature=data['current']['temperature'],
+                        description=data['current']['weather_descriptions'][0],
+                        feels_like=data['current']['feelslike'],
+                        visibiltity=data['current']['visibility'],
+                        humidity=data['current']['humidity'],
+                        wind_speed=data['current']['wind_speed']
+                        )
+    print(weather_info)
+
+    return render(request, "view.html", weather_info)
