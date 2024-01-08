@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: app
+    command: runserver 0:8000
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/code
